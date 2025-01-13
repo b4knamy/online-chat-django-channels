@@ -48,7 +48,7 @@ export default function Room({
       if (event_data.type === 'chat.message') {
         setMessages((prev) => {
           const currentDate = new Date();
-          const currentTime = `${currentDate.getHours()}:${currentDate.getMinutes()}`;
+          const currentTime = `${String(currentDate.getHours()).padStart(2, '0')}:${String(currentDate.getMinutes()).padStart(2, '0')}`;
           const newMessage: MessageTyped = {
             ...event_data.context.message,
             created_at: currentTime,
