@@ -1,6 +1,6 @@
 Projeto Chat Online
 
-- Baixar o projeto
+- Para baixar o projeto
   abra o terminal e digite os seguintes comandos:
 
   * git clone https://github.com/b4knamy/online-chat-django-channels.git app
