@@ -28,13 +28,19 @@ export default function User({
 
   return (
     <Container>
-      {availableUsers.map((username) => {
-        return (
-          <div key={username} onClick={() => loginUser(username)}>
-            <AvailableUser username={username} />
-          </div>
-        );
-      })}
+      {
+        availableUsers.length > 0 
+        ?
+        availableUsers.map((username) => {
+          return (
+            <div key={username} onClick={() => loginUser(username)}>
+              <AvailableUser username={username} />
+            </div>
+          );
+        })
+        :
+        <><span>Todos os usuários estão em uso no momento.</span></>
+      }
     </Container>
   );
 }
