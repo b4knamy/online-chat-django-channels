@@ -13,6 +13,7 @@ services:
       - backend
     volumes:
       - ./front-end:/frontend
+      - /frontend/node_modules
 
   
   backend:
