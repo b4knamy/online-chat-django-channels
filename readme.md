@@ -7,8 +7,6 @@ Projeto Chat Online
 
   * cd app
 
-  irá conter as pastas referente ao backend e o frontend
-  abra um terminal para cada pasta
-  segue com o terminal do backend:
+  * docker-compose up --build
 
-  * python3
+- Acessar http://localhost:5173
