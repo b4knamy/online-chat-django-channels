@@ -2,9 +2,9 @@ import { Container } from './room.style';
 import Form from './form/form';
 import Chat from './chat/chat';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { MessageTyped } from '../home/hook';
 import ChatDetails from './details/details';
 import OnlineUsers from './online/online';
+import { MessageTyped } from '../../context/environment/actions';
 
 type props = {
   name: string;
@@ -33,21 +33,18 @@ export default function Room({
   currentUser,
   roomOwner,
   environmentSocket,
-  setCurrentRoom,
 }: props) {
   const [chatSocket, setChatSocket] = useState<WebSocket | null>(null);
   const [messages, setMessages] = useState<MessageTyped[]>([]);
   const [users, setUsers] = useState<string[]>([]);
 
   useEffect(() => {
-    const webSocketUrl = `ws://127.0.0.1:8000/ws/chat/${name}/?username=${currentUser}`;
+    const webSocketUrl = `ws://0.0.0.0:8000/ws/chat/${name}/?username=${currentUser}`;
 
-    const chatSocket = new WebSocket(webSocketUrl);
+    const chatSocketConnection = new WebSocket(webSocketUrl);
 
-    chatSocket.onmessage = (event) => {
+    chatSocketConnection.onmessage = (event) => {
       const event_data: roomSocketEvent = JSON.parse(event.data);
-
-      // console.log(event_data);
       if (event_data.type === 'chat.message') {
         setMessages((prev) => {
           const currentDate = new Date();
@@ -65,12 +62,11 @@ export default function Room({
       }
     };
 
-    chatSocket.onclose = () => setCurrentRoom('');
-
-    setChatSocket(chatSocket);
+    setChatSocket(chatSocketConnection);
+    
+    return () => chatSocketConnection.close()
     /* eslint-disable-next-line */
   }, [name]);
-  console.log(users);
   return (
     <Container>
       <OnlineUsers users={users} />

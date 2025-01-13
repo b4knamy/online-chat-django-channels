@@ -4,11 +4,11 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.auth import login, logout
 from django.db.utils import IntegrityError
 from re import match
-import redis.client
+import os
 from .models import Room, User
-import redis
+from redis.client import StrictRedis
 
-redis_client = redis.StrictRedis()
+redis_client = StrictRedis(host=os.environ.get("REDIS_POST", 'redis'))
 usernames = [
     user.username for user in User.objects.filter(is_superuser=False)]
 redis_client.sadd("available_users", *usernames)
@@ -35,8 +35,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.update_user_list()
 
     async def disconnect(self, code):
-        await self.update_user_list(remove=True)
         await self.channel_layer.group_discard(self.room_group_name, self.channel_name)
+        await self.update_user_list(remove=True)
 
     async def receive(self, text_data):
         body = json.loads(text_data)
@@ -65,7 +65,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             redis_client.srem(self.room_group_name, self.username)
         else:
             redis_client.sadd(self.room_group_name, self.username)
-
+        print("i run here")
         await self.update_current_user_in_room()
 
     async def update_current_user_in_room(self):

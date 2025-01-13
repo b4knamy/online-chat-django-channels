@@ -53,6 +53,7 @@ export const NoticationContainer = styled.div<props>`
   height: 100px !important;
   background-color: #fff;
   ${FlexCC}
+  padding: 20px;
   position: absolute;
   top: ${({ $index }) => ($index > 0 ? `${$index * 130}px` : '0px')};
   transition: top 300ms linear;

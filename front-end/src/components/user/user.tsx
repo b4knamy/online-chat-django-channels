@@ -13,6 +13,7 @@ export default function User({
   environmentSocket,
   setCurrentUser,
 }: props) {
+
   const loginUser = async (username: string) => {
     const context = JSON.stringify({
       type: 'login.user',

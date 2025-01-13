@@ -113,7 +113,6 @@ export type GroupTyped = {
   admin: UserTyped;
   id: number;
   name: string;
-  room_messages: MessageTyped[];
 };
 
 export type Notification = {

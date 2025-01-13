@@ -1,8 +1,7 @@
 import { ReactNode, useEffect, useReducer, useRef, useState } from 'react';
 import environmentReducer from './reducer';
 import { environmentContext, ValueProvider, initEnvironment } from './context';
-import environmentActions, { GroupTyped } from './actions';
-import { webSocketData } from '../../components/home/hook';
+import environmentActions from './actions';
 
 export default function EnvironmentProvider({
   children,
@@ -19,7 +18,7 @@ export default function EnvironmentProvider({
 
   useEffect(() => {
     const fetchGroups = async () => {
-      const response = await fetch('http://127.0.0.1:8000/api/rooms');
+      const response = await fetch('http://0.0.0.0:8000/api/rooms');
 
       if (response.ok) {
         const data: GroupTyped[] = await response.json();
@@ -31,7 +30,7 @@ export default function EnvironmentProvider({
   }, []);
 
   useEffect(() => {
-    const websocketUrl = 'http://127.0.0.1:8000/ws/environment';
+    const websocketUrl = 'http://0.0.0.0:8000/ws/environment';
 
     const environmentWebSocket = new WebSocket(websocketUrl);
 
@@ -65,3 +64,63 @@ export default function EnvironmentProvider({
     </environmentContext.Provider>
   );
 }
+
+
+export type webSocketData =
+  | availableUsersEvent
+  | roomEvent
+  | roomFailCreationEvent
+  | removeRoomEvent
+  | notifyEvent;
+
+export type availableUsersEvent = {
+  event_type: 'available.users';
+  context: {
+    available_users: string[];
+    online_users: number;
+  };
+};
+
+export type roomEvent = {
+  event_type: 'room.created';
+  context: GroupTyped;
+};
+
+export type roomFailCreationEvent = {
+  event_type: 'room.failed';
+  context: {
+    message: string;
+  };
+};
+
+export type removeRoomEvent = {
+  event_type: 'remove.room';
+  context: {
+    room: string;
+  };
+};
+
+export type notifyEvent = {
+  event_type: 'notify.user';
+  context: {
+    message: string;
+  };
+};
+
+export type UserTyped = {
+  has_room: boolean;
+  id: number;
+  username: string;
+};
+
+export type MessageTyped = {
+  user: UserTyped;
+  text: string;
+  created_at: string;
+};
+
+export type GroupTyped = {
+  admin: UserTyped;
+  id: number;
+  name: string;
+};

@@ -22,7 +22,7 @@ export default function ChatBox({
     <Container $isCurrentUser={isCurrentUser}>
       <div className="chat-container">
         <div className="chat-profile">
-          <img src={`http://127.0.0.1:8000/static/${username}.jpg`} alt="" />
+          <img src={`http://0.0.0.0:8000/static/${username}.jpg`} alt="" />
         </div>
         <div className="chat-text">
           <div className="chat-details">

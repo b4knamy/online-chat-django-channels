@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-import { MessageTyped } from '../../home/hook';
 import ChatBox from './box/box';
 import { Container } from './chat.style';
+import { MessageTyped } from '../../../context/environment/actions';
 
 type props = {
   messages: MessageTyped[];

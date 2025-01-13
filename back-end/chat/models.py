@@ -11,7 +11,6 @@ class Room(models.Model):
     admin = models.ForeignKey(
         User, related_name="user_room", on_delete=models.CASCADE)
     name = models.CharField(max_length=10, unique=True)
-    max_users = models.IntegerField(default=3)
 
     def __str__(self):
         return f"Room {self.name} owned by {self.admin.username}"

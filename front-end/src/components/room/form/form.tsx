@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Container } from './form.style';
-import { UserTyped } from '../../home/hook';
+import { UserTyped } from '../../../context/environment/actions';
 
 export type messageBody = {
   room: string;

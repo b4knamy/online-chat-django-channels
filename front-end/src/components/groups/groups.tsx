@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react';
 import Group from './group/group';
 import { Container } from './groups.style';
 import CreateGroup from './create/create';
-import { GroupTyped } from '../home/hook';
+import { GroupTyped } from '../../context/environment/actions';
 
 type props = {
   setCurrentRoom: Dispatch<SetStateAction<string>>;

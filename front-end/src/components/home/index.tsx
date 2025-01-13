@@ -2,12 +2,12 @@ import Room from '../room/room';
 import Details from '../details/details';
 import Groups from '../groups/groups';
 import { Content, HomeContainer } from './index.style';
-import { GroupTyped } from './hook';
-import { memo, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import User from '../user/user';
 import Warning from '../groups/warning/warning';
 import useEnvironmentContext from '../../context/environment/context';
 import Notifications from '../notifications/notifications';
+import { GroupTyped } from '../../context/environment/actions';
 
 export default function Home() {
   const { state, environmentSocket, cleanWarning, removeNotification } =
@@ -15,16 +15,12 @@ export default function Home() {
   const [currentUser, setCurrentUser] = useState('');
   return (
     <HomeContainer>
-      {/* {state.notifications.length > 0 && (
+      {state.notifications.length > 0 && (
         <Notifications
           notifications={state.notifications}
           removeNotification={removeNotification}
         />
-      )} */}
-      <Notifications
-        notifications={state.notifications}
-        removeNotification={removeNotification}
-      />
+      )}
       {state.warning && (
         <Warning warning={state.warning} cleanWarning={cleanWarning} />
       )}
@@ -62,6 +58,15 @@ type props = {
 const HomeContent = memo(
   ({ groups, environmentSocket, currentUser }: props) => {
     const [currentRoom, setCurrentRoom] = useState('');
+
+    useEffect(() => {
+      const isRemoved = groups.filter((group) => group.name == currentRoom).length === 0
+
+      if (isRemoved) {
+        setCurrentRoom("")
+      }
+      /* eslint-disable-next-line */
+    }, [groups.length])
     return (
       <Content>
         <Groups
@@ -77,7 +82,7 @@ const HomeContent = memo(
               return (
                 <Room
                   key={group.id}
-                  name={group.name}
+                  name={currentRoom}
                   environmentSocket={environmentSocket}
                   roomOwner={group.admin.username}
                   currentUser={currentUser}

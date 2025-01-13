@@ -1,0 +1,37 @@
+
+services:
+  frontend:
+    container_name: app-frontend
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://0.0.0.0:8000
+    depends_on:
+      - backend
+    volumes:
+      - ./front-end:/frontend
+
+  
+  backend:
+    container_name: app-backend
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - redis
+    volumes:
+      - ./back-end:/backend
+
+  redis:
+    container_name:  app-redis
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
